@@ -26,30 +26,38 @@ public class BootStrapData implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Author eric = new Author("Eric","Evans");
         Book ddd = new Book("Domain Driven Design", "12341234");
-        Publisher publisher1 = new Publisher("Publisher1", "Samplestreet1", "City1", "State1", "Zip1");
+        Publisher publisher = new Publisher("Publisher1", "Samplestreet1", "City1", "State1", "Zip1");
+        publisherRepository.save(publisher);
 
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
 
+        ddd.setPublisher(publisher);
+        publisher.getBooks().add(ddd);
+
         authorRepository.save(eric);
         bookRepository.save(ddd);
-        publisherRepository.save(publisher1);
+        publisherRepository.save(publisher);
 
         Author rod = new Author("Rod","Johnson");
         Book noEJB = new Book("J2EE Development", "512315235");
-        Publisher publisher2 = new Publisher("Publisher2","Samplestreet2", "City2", "State2", "Zip2");
 
         rod.getBooks().add(noEJB);
         noEJB.getAuthors().add(rod);
 
+        noEJB.setPublisher(publisher);
+        publisher.getBooks().add(noEJB);
+
         authorRepository.save(rod);
         bookRepository.save(noEJB);
-        publisherRepository.save(publisher2);
+        publisherRepository.save(publisher);
 
         System.out.println("Started in Bootstrap");
         System.out.println("Number of Authors: " + authorRepository.count());
         System.out.println("Number of Books: " + bookRepository.count());
         System.out.println("Number of Publishers: " + publisherRepository.count());
+        System.out.println("Publisher Number of Books: " + publisher.getBooks().size());
+
 
     }
 }
